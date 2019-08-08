@@ -10,6 +10,8 @@ import (
 var whitelist = flag.Bool("whitelist", false, "whitelist terraform modules + resources")
 
 func main() {
+	flag.Parse()
+
 	var infraPath string
 	var whitelistPath string
 
