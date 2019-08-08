@@ -24,15 +24,36 @@ type whitelist struct {
 	ModuleCalls []moduleCall               `json:"module_calls"`
 }
 
-func loadModule(dir string) *tfconfig.Module {
+func LoadAndMatchAll(infraPath string, whitelistPath string) error {
+	w, err := loadWhitelist(whitelistPath)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "Error loading whitelist at %s\n", whitelistPath)
+		return fmt.Errorf("Error loading whitelist at %s\n", whitelistPath)
+	}
+
+	m, err := loadModule(infraPath)
+	if err != nil {
+		_, _ = fmt.Fprintf(os.Stderr, "Error loading infra definition at %s\n", infraPath)
+		return fmt.Errorf("Error loading infra definition at %s\n", infraPath)
+	}
+
+	errResources := matchResources(m, w)
+	errModules := matchModules(m, w)
+	if errResources != nil || errModules != nil {
+		return fmt.Errorf("matchResources and matchModules should not return an error")
+	}
+	return nil
+}
+
+func loadModule(dir string) (*tfconfig.Module, error) {
 	module, _ := tfconfig.LoadModule(dir)
 
 	if module.Diagnostics.HasErrors() {
 		_, _ = fmt.Fprintf(os.Stderr, "error loading module [%s]: %v\n", dir, module.Diagnostics.Error())
-		os.Exit(1)
+		return nil, module.Diagnostics.Err()
 	}
 
-	return module
+	return module, nil
 }
 
 func loadWhitelist(path string) (*whitelist, error) {

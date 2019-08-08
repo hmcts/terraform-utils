@@ -23,7 +23,10 @@ func TestModuleNotAllowed(t *testing.T) {
 		t.Errorf("Error %s", err)
 	}
 
-	m := loadModule("test-fixtures/module-not-allowed")
+	m, err := loadModule("test-fixtures/module-not-allowed")
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
 
 	err = matchModules(m, w)
 	if err == nil {
@@ -37,7 +40,10 @@ func TestResourceNotAllowed(t *testing.T) {
 		t.Errorf("Error %s", err)
 	}
 
-	m := loadModule("test-fixtures/resource-not-allowed")
+	m, err := loadModule("test-fixtures/resource-not-allowed")
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
 
 	err = matchResources(m, w)
 	if err == nil {
@@ -45,17 +51,27 @@ func TestResourceNotAllowed(t *testing.T) {
 	}
 }
 
-func TestAllAllowed(t *testing.T) {
+func TestAllAllowedStepByStep(t *testing.T) {
 	w, err := loadWhitelist("test-fixtures/all-allowed/whitelist.json")
 	if err != nil {
 		t.Errorf("Error %s", err)
 	}
 
-	m := loadModule("test-fixtures/all-allowed")
+	m, err := loadModule("test-fixtures/all-allowed")
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
 
 	errResources := matchResources(m, w)
 	errModules := matchModules(m, w)
 	if errResources != nil || errModules != nil {
 		t.Errorf("matchResources and matchModules should not return an error")
+	}
+}
+
+func TestAllAllowed(t *testing.T) {
+	err := LoadAndMatchAll("test-fixtures/all-allowed", "test-fixtures/all-allowed/whitelist.json")
+	if err != nil {
+		t.Errorf("matchResources and matchModules should not return an error: %s", err)
 	}
 }
