@@ -17,7 +17,7 @@ func TestLoadWhitelist(t *testing.T) {
 	}
 }
 
-func TestMatchModules(t *testing.T) {
+func TestModuleNotAllowed(t *testing.T) {
 	w, err := loadWhitelist("test-fixtures/module-not-allowed/whitelist.json")
 	if err != nil {
 		t.Errorf("Error %s", err)
@@ -28,5 +28,19 @@ func TestMatchModules(t *testing.T) {
 	err = matchModules(m, w)
 	if err == nil {
 		t.Errorf("matchModules should return an error")
+	}
+}
+
+func TestResourceNotAllowed(t *testing.T) {
+	w, err := loadWhitelist("test-fixtures/resource-not-allowed/whitelist.json")
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
+
+	m := loadModule("test-fixtures/resource-not-allowed")
+
+	err = matchResources(m, w)
+	if err == nil {
+		t.Errorf("matchResources should return an error")
 	}
 }

@@ -14,13 +14,14 @@ type moduleCall struct {
 }
 
 type managedResource struct {
-	Type string `json:"type"`
-	Provider string `json:"provider"`
+	Type     string `json:"type"`
+	Provider string `json:"provider,omitempty"`
+	Mode     string `json:"mode,omitempty"`
 }
 
 type whitelist struct {
-	Resources []managedResource `json:"resources"`
-	ModuleCalls []moduleCall `json:"module_calls"`
+	Resources   map[string]managedResource `json:"resources"`
+	ModuleCalls []moduleCall               `json:"module_calls"`
 }
 
 func loadModule(dir string) *tfconfig.Module {
@@ -75,6 +76,22 @@ func matchModules(module *tfconfig.Module, whitelist *whitelist) error {
 	if len(notAllowed) > 0 {
 		_, _ = fmt.Fprintf(os.Stderr, "Error matching modules: %v\n", notAllowed)
 		return fmt.Errorf("modules not allowed found: %v\n", notAllowed)
+	}
+	return nil
+}
+
+func matchResources(module *tfconfig.Module, whitelist *whitelist) error {
+	var notAllowed []tfconfig.Resource
+
+	for k, v := range module.ManagedResources {
+		if _, ok := whitelist.Resources[k]; !ok {
+			notAllowed = append(notAllowed, *v)
+		}
+	}
+
+	if len(notAllowed) > 0 {
+		_, _ = fmt.Fprintf(os.Stderr, "Error matching resources: %v\n", notAllowed)
+		return fmt.Errorf("resources not allowed found: %v\n", notAllowed)
 	}
 	return nil
 }
