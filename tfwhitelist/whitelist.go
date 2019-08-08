@@ -83,8 +83,8 @@ func matchModules(module *tfconfig.Module, whitelist *whitelist) error {
 func matchResources(module *tfconfig.Module, whitelist *whitelist) error {
 	var notAllowed []tfconfig.Resource
 
-	for k, v := range module.ManagedResources {
-		if _, ok := whitelist.Resources[k]; !ok {
+	for _, v := range module.ManagedResources {
+		if _, ok := whitelist.Resources[v.Type]; !ok {
 			notAllowed = append(notAllowed, *v)
 		}
 	}

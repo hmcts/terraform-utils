@@ -44,3 +44,18 @@ func TestResourceNotAllowed(t *testing.T) {
 		t.Errorf("matchResources should return an error")
 	}
 }
+
+func TestAllAllowed(t *testing.T) {
+	w, err := loadWhitelist("test-fixtures/all-allowed/whitelist.json")
+	if err != nil {
+		t.Errorf("Error %s", err)
+	}
+
+	m := loadModule("test-fixtures/all-allowed")
+
+	errResources := matchResources(m, w)
+	errModules := matchModules(m, w)
+	if errResources != nil || errModules != nil {
+		t.Errorf("matchResources and matchModules should not return an error")
+	}
+}
