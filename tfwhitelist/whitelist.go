@@ -83,7 +83,7 @@ func loadWhitelist(paths []string) (*whitelist, error) {
 		byteValue, _ := ioutil.ReadAll(jsonFile)
 		err = json.Unmarshal(byteValue, &allowedPart)
 		if err != nil {
-			_, _ = fmt.Fprintf(os.Stderr, "Error unmarshalling file [%s]: %s\n", paths, err)
+			_, _ = fmt.Fprintf(os.Stderr, "Error unmarshalling file [%s]: %s\n", paths[i], err)
 			return nil, err
 		}
 		allowed.merge(&allowedPart)

@@ -22,7 +22,7 @@ func main() {
 			os.Exit(1)
 		} else {
 			infraPath = flag.Arg(0)
-			for i := 0; i < flag.NArg(); i++ {
+			for i := 1; i < flag.NArg(); i++ {
 				whitelistPaths = append(whitelistPaths, flag.Arg(i))
 			}
 		}
