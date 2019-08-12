@@ -20,8 +20,8 @@ type managedResource struct {
 }
 
 type whitelist struct {
-	Resources   map[string]managedResource `json:"resources"`
-	ModuleCalls []moduleCall               `json:"module_calls"`
+	Resources   []managedResource `json:"resources"`
+	ModuleCalls []moduleCall      `json:"module_calls"`
 }
 
 func LoadAndMatchAll(infraPath string, whitelistPath string) error {
@@ -80,7 +80,6 @@ func loadWhitelist(path string) (*whitelist, error) {
 func matchModules(module *tfconfig.Module, whitelist *whitelist) error {
 	var notAllowed []tfconfig.ModuleCall
 
-	// TODO inefficient, use a map-based data structure instead
 	for _, v := range module.ModuleCalls {
 		allowed := false
 		for i := 0; i < len(whitelist.ModuleCalls); i++ {
@@ -105,7 +104,14 @@ func matchResources(module *tfconfig.Module, whitelist *whitelist) error {
 	var notAllowed []tfconfig.Resource
 
 	for _, v := range module.ManagedResources {
-		if _, ok := whitelist.Resources[v.Type]; !ok {
+		allowed := false
+		for i := 0; i < len(whitelist.Resources); i++ {
+			if whitelist.Resources[i].Type == v.Type {
+				allowed = true
+				break
+			}
+		}
+		if !allowed {
 			notAllowed = append(notAllowed, *v)
 		}
 	}
