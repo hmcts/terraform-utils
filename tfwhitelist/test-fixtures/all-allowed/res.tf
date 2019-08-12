@@ -16,5 +16,5 @@ module "bulk-scan-orchestrator-webapp" {
 }
 
 module "bulk-scan-orchestrator-postgres" {
-  source = "git@github.com:hmcts/cnp-module-postgres?ref=master"
+  source = "git@github.com:hmcts/cnp-module-postgres"
 }
