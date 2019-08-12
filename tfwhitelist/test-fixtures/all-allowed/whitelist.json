@@ -4,7 +4,6 @@
     {"type": "azurerm_resource_group"}
   ],
   "module_calls": [
-    {"source":  "git@github.com:hmcts/cnp-module-webapp?ref=master"},
     {"source":  "git@github.com:hmcts/cnp-module-postgres?ref=master"}
   ]
 }

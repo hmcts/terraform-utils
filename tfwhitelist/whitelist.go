@@ -24,11 +24,20 @@ type whitelist struct {
 	ModuleCalls []moduleCall      `json:"module_calls"`
 }
 
-func LoadAndMatchAll(infraPath string, whitelistPath string) error {
-	w, err := loadWhitelist(whitelistPath)
+func (w *whitelist) merge(part *whitelist) {
+	if len(part.Resources) > 0 {
+		w.Resources = append(w.Resources, part.Resources...)
+	}
+	if len(part.ModuleCalls) > 0 {
+		w.ModuleCalls = append(w.ModuleCalls, part.ModuleCalls...)
+	}
+}
+
+func LoadAndMatchAll(infraPath string, whitelistPaths []string) error {
+	w, err := loadWhitelist(whitelistPaths)
 	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "Error loading whitelist at %s\n", whitelistPath)
-		return fmt.Errorf("Error loading whitelist at %s\n", whitelistPath)
+		_, _ = fmt.Fprintf(os.Stderr, "Error loading whitelist at %s\n", whitelistPaths)
+		return fmt.Errorf("Error loading whitelist at %s\n", whitelistPaths)
 	}
 
 	m, err := loadModule(infraPath)
@@ -56,22 +65,26 @@ func loadModule(dir string) (*tfconfig.Module, error) {
 	return module, nil
 }
 
-func loadWhitelist(path string) (*whitelist, error) {
-	jsonFile, err := os.Open(path)
-	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "Error loading file [%s]: %s\n", path, err)
-		return nil, err
-	}
-	_, _ = fmt.Fprintf(os.Stdout, "Successfully opened %s\n", path)
-
-	defer jsonFile.Close()
-
+func loadWhitelist(paths []string) (*whitelist, error) {
 	var allowed whitelist
-	byteValue, _ := ioutil.ReadAll(jsonFile)
-	err = json.Unmarshal(byteValue, &allowed)
-	if err != nil {
-		_, _ = fmt.Fprintf(os.Stderr, "Error unmarshalling file [%s]: %s\n", path, err)
-		return nil, err
+
+	for i := 0; i < len(paths); i++ {
+		var allowedPart whitelist
+		jsonFile, err := os.Open(paths[i])
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "Error loading file [%s]: %s\n", paths[i], err)
+			return nil, err
+		}
+		_, _ = fmt.Fprintf(os.Stdout, "Successfully opened %s\n", paths[i])
+		defer jsonFile.Close()
+
+		byteValue, _ := ioutil.ReadAll(jsonFile)
+		err = json.Unmarshal(byteValue, &allowedPart)
+		if err != nil {
+			_, _ = fmt.Fprintf(os.Stderr, "Error unmarshalling file [%s]: %s\n", paths, err)
+			return nil, err
+		}
+		allowed.merge(&allowedPart)
 	}
 
 	return &allowed, nil
