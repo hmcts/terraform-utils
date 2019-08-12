@@ -13,23 +13,25 @@ func main() {
 	flag.Parse()
 
 	var infraPath string
-	var whitelistPath string
+	var whitelistPaths []string
 
 	if *whitelist {
 		if flag.NArg() < 2 {
 			_, _ = fmt.Fprintf(os.Stderr,
-				"error: tf-utils --whitelist <terraform-infra-dir-path> <whitelist-file-path>\n")
+				"error: tf-utils --whitelist <terraform-infra-dir-path> <whitelist-file-path>...<whitelist-file-path>\n")
 			os.Exit(1)
 		} else {
 			infraPath = flag.Arg(0)
-			whitelistPath = flag.Arg(1)
+			for i := 0; i < flag.NArg(); i++ {
+				whitelistPaths = append(whitelistPaths, flag.Arg(i))
+			}
 		}
 	} else {
 		fmt.Fprintf(os.Stderr, "Currently only whitelist operation is available\n")
 		os.Exit(1)
 	}
 
-	err := tfwhitelist.LoadAndMatchAll(infraPath, whitelistPath)
+	err := tfwhitelist.LoadAndMatchAll(infraPath, whitelistPaths)
 	if err != nil {
 		os.Exit(1)
 	}

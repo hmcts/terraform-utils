@@ -5,7 +5,7 @@ import (
 )
 
 func TestLoadWhitelist(t *testing.T) {
-	w, err := loadWhitelist("test-fixtures/module-not-allowed/whitelist.json")
+	w, err := loadWhitelist([]string{"test-fixtures/module-not-allowed/whitelist.json"})
 	if err != nil {
 		t.Errorf("Error %s", err)
 	}
@@ -18,7 +18,7 @@ func TestLoadWhitelist(t *testing.T) {
 }
 
 func TestModuleNotAllowed(t *testing.T) {
-	w, err := loadWhitelist("test-fixtures/module-not-allowed/whitelist.json")
+	w, err := loadWhitelist([]string{"test-fixtures/module-not-allowed/whitelist.json"})
 	if err != nil {
 		t.Errorf("Error %s", err)
 	}
@@ -35,7 +35,7 @@ func TestModuleNotAllowed(t *testing.T) {
 }
 
 func TestResourceNotAllowed(t *testing.T) {
-	w, err := loadWhitelist("test-fixtures/resource-not-allowed/whitelist.json")
+	w, err := loadWhitelist([]string{"test-fixtures/resource-not-allowed/whitelist.json"})
 	if err != nil {
 		t.Errorf("Error %s", err)
 	}
@@ -52,7 +52,8 @@ func TestResourceNotAllowed(t *testing.T) {
 }
 
 func TestAllAllowedStepByStep(t *testing.T) {
-	w, err := loadWhitelist("test-fixtures/all-allowed/whitelist.json")
+	w, err := loadWhitelist(
+		[]string{"test-fixtures/all-allowed/whitelist.json", "test-fixtures/all-allowed/whitelist.team.json"})
 	if err != nil {
 		t.Errorf("Error %s", err)
 	}
@@ -70,7 +71,8 @@ func TestAllAllowedStepByStep(t *testing.T) {
 }
 
 func TestAllAllowed(t *testing.T) {
-	err := LoadAndMatchAll("test-fixtures/all-allowed", "test-fixtures/all-allowed/whitelist.json")
+	err := LoadAndMatchAll("test-fixtures/all-allowed",
+		[]string{"test-fixtures/all-allowed/whitelist.json", "test-fixtures/all-allowed/whitelist.team.json"})
 	if err != nil {
 		t.Errorf("matchResources and matchModules should not return an error: %s", err)
 	}

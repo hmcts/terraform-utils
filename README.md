@@ -12,10 +12,12 @@ To match Terraform infrastructure against a whitelist of resources and modules, 
 used:
 
 ```shell script
-tf-utils --whitelist <terraform-infra-dir-path> <whitelist-file-path>
+tf-utils --whitelist <terraform-infra-dir-path> <whitelist-file-path>...<whitelist-file-path>
 ```
 
-where the first argument is a Terraform definitions directory and the second argument is a whitelist file, which is a json file containing allowed resources and modules. 
+where the first argument is a Terraform definitions directory and the second argument is a list of whitelist files which are merged as first step. 
+A whitelist is a json file containing allowed resources and modules. Having multiple files merged allows to have a global whitelist which can be 
+specialised in case that is needed in isolated specific cases.
 For example:
 
 ```json
