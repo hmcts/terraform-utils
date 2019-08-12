@@ -3,10 +3,11 @@ package tfwhitelist
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/hashicorp/terraform-config-inspect/tfconfig"
 	"io/ioutil"
 	"os"
-
-	"github.com/hashicorp/terraform-config-inspect/tfconfig"
+	"regexp"
+	"strings"
 )
 
 type moduleCall struct {
@@ -68,6 +69,7 @@ func loadModule(dir string) (*tfconfig.Module, error) {
 func loadWhitelist(paths []string) (*whitelist, error) {
 	var allowed whitelist
 
+	// merge all whitelists
 	for i := 0; i < len(paths); i++ {
 		var allowedPart whitelist
 		jsonFile, err := os.Open(paths[i])
@@ -92,11 +94,17 @@ func loadWhitelist(paths []string) (*whitelist, error) {
 
 func matchModules(module *tfconfig.Module, whitelist *whitelist) error {
 	var notAllowed []tfconfig.ModuleCall
+	re, _ := regexp.Compile(`.*\?ref=.*`)
 
 	for _, v := range module.ModuleCalls {
 		allowed := false
+		source := v.Source
+		// use master branch as default
+		if !re.MatchString(source) {
+			source = strings.Join([]string{source, "?ref=master"}, "")
+		}
 		for i := 0; i < len(whitelist.ModuleCalls); i++ {
-			if whitelist.ModuleCalls[i].Source == v.Source {
+			if whitelist.ModuleCalls[i].Source == source {
 				allowed = true
 				break
 			}
