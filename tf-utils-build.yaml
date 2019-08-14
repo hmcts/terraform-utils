@@ -1,0 +1,4 @@
+version: v1.0.0
+steps:
+  - build: -t {{.Run.Registry}}/tf-utils:{{.Run.ID}} -f Dockerfile .
+  - push: ["{{.Run.Registry}}/tf-utils:{{.Run.ID}}"]
