@@ -10,6 +10,6 @@ RUN go install -v ./...
 
 
 # Runtime env
-FROM gcr.io/distroless/base:debug
+FROM alpine:3.10
 COPY --from=build /go/bin/tf-utils /
-ENTRYPOINT ["/tf-utils"]
+CMD ["/tf-utils"]
