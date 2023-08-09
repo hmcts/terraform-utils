@@ -1,5 +1,5 @@
 # Build env
-FROM golang:1.12 as build
+FROM golang:1.21 as build
 
 WORKDIR /go/src/tf-utils
 COPY . .
@@ -11,6 +11,6 @@ RUN go install -v ./...
 
 
 # Runtime env
-FROM alpine:3.10
+FROM alpine:3.18
 COPY --from=build /go/bin/tf-utils /
 CMD ["/tf-utils"]
