@@ -38,4 +38,4 @@ jobs:
         with:
           push: true
           platforms: linux/amd64,linux/arm64
-          tags: ${{ env.AZURE_CONTAINER_REGISTRY_URL }}/tf-utils/tf-utils:${{ steps.prep.outputs.BUILD_ID }}
+          tags: ${{ env.AZURE_CONTAINER_REGISTRY_URL }}/tf-utils:${{ steps.prep.outputs.BUILD_ID }}
