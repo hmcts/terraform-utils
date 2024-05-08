@@ -3,7 +3,7 @@ module tf-utils
 go 1.21
 
 require (
-	github.com/hashicorp/terraform-config-inspect v0.0.0-20231204233900-a34142ec2a72
+	github.com/hashicorp/terraform-config-inspect v0.0.0-20240507135902-21dcc2942448
 	github.com/spf13/pflag v1.0.5
 )
 
