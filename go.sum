@@ -50,6 +50,8 @@ github.com/hashicorp/terraform-config-inspect v0.0.0-20231204233900-a34142ec2a72
 github.com/hashicorp/terraform-config-inspect v0.0.0-20231204233900-a34142ec2a72/go.mod h1:l8HcFPm9cQh6Q0KSWoYPiePqMvRFenybP1CH2MjKdlg=
 github.com/hashicorp/terraform-config-inspect v0.0.0-20240507135902-21dcc2942448 h1:rrpMPsKdq+AO9+dMOQDzTO1IBHYEGcYwF1/roaSDy2Y=
 github.com/hashicorp/terraform-config-inspect v0.0.0-20240507135902-21dcc2942448/go.mod h1:l8HcFPm9cQh6Q0KSWoYPiePqMvRFenybP1CH2MjKdlg=
+github.com/hashicorp/terraform-config-inspect v0.0.0-20240508105306-75f2724ffd72 h1:Kd8qItbRCYyDXF6CNFGJhUFMecJCdFvOGHNcdFwZYRs=
+github.com/hashicorp/terraform-config-inspect v0.0.0-20240508105306-75f2724ffd72/go.mod h1:l8HcFPm9cQh6Q0KSWoYPiePqMvRFenybP1CH2MjKdlg=
 github.com/hpcloud/tail v1.0.0/go.mod h1:ab1qPbhIpdTxEkNHXyeSf5vhxWSCs/tWer42PpOxQnU=
 github.com/jessevdk/go-flags v1.4.0/go.mod h1:4FA24M0QyGHXBuZZK/XkWh8h0e1EYbRYJSGM75WSRxI=
 github.com/kr/pretty v0.1.0 h1:L/CwN0zerZDmRFUapSPitk6f+Q3+0za1rQkzVuMiMFI=
