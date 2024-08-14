@@ -1,5 +1,5 @@
 # Build env
-FROM golang:1.22 as build
+FROM golang:1.23 as build
 
 WORKDIR /go/src/tf-utils
 COPY . .
