@@ -4,7 +4,7 @@ go 1.21
 
 require (
 	github.com/hashicorp/terraform-config-inspect v0.0.0-20240509232506-4708120f8f30
-	github.com/spf13/pflag v1.0.6
+	github.com/spf13/pflag v1.0.10
 )
 
 require (
