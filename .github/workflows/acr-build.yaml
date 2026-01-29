@@ -16,7 +16,7 @@ jobs:
       NEW_AZURE_CONTAINER_REGISTRY_URL: hmctsprod.azurecr.io
     steps:
       - name: Checkout Source
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       - name: Generate build ID
         id: prep
