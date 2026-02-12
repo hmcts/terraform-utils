@@ -38,7 +38,7 @@ jobs:
       - name: Setup Docker Buildx
         uses: docker/setup-buildx-action@v2
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
+        uses: docker/setup-qemu-action@v3
 
       # HMCTSPROD ACR
       - name: 'ACR Login - ${{ env.NEW_AZURE_CONTAINER_REGISTRY_URL }}'
