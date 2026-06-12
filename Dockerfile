@@ -11,6 +11,6 @@ RUN go install -v ./...
 
 
 # Runtime env
-FROM alpine:3.23
+FROM alpine:3.24
 COPY --from=build /go/bin/tf-utils /
 CMD ["/tf-utils"]
